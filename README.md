@@ -50,17 +50,11 @@ data = data.dropna(axis=0, how='all')
 fig=plt.figure(figsize=(18, 16), dpi= 80, facecolor='w', edgecolor='k')
 sns.heatmap(data, cmap='RdBu_r', vmin=-1, vmax=1)
 plt.xlabel('Array')
+plt.savefig('heatmap.png')
 ```
 
 
-
-
-    <matplotlib.text.Text at 0x7fcc2fe4a7f0>
-
-
-
-
-![png](output_6_1.png)
+![png](output_6_0.png)
 
 
 
@@ -91,6 +85,8 @@ annotation.columns
 ```python
 soft_path = 'GSE1990_family.soft'
 
+lines = open(soft_path).readlines()
+
 names = {}
 arrays = {}
 
@@ -100,7 +96,7 @@ while (n < len(lines)):
     sample_id = lines[n].strip().split(' = ')[1]
     sample_title = lines[n+1].strip().split(' = ')[1]
     
-    print(sample_id)
+    #print(sample_id)
 
     # get number of rows
     while '!Sample_data_row_count' not in lines[n]:
@@ -118,22 +114,6 @@ while (n < len(lines)):
     
     n = header + nrows + 2
 ```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-8-1b02947f8256> in <module>()
-          6 n = 7416
-          7 
-    ----> 8 while (n < len(lines)):
-          9     sample_id = lines[n].strip().split(' = ')[1]
-         10     sample_title = lines[n+1].strip().split(' = ')[1]
-
-
-    NameError: name 'lines' is not defined
-
 
 
 ## Step 1: Making the markers
@@ -209,7 +189,12 @@ z = d / (a + s)
 ```python
 Z.hist(bins=100)
 z.hist()
+plt.savefig('hist.png')
 ```
+
+
+![png](output_18_0.png)
+
 
 The orange is z, the blue is Z.
 
@@ -232,6 +217,7 @@ Sklearns kmeans doesnt seem to handle Nan so I'm just going to impute them with 
 
 ```python
 from sklearn.preprocessing import Imputer
+from sklearn.cluster import KMeans
 ```
 
 
@@ -261,6 +247,13 @@ data['kmeans'] = data.apply(lambda x: do_kmeans(x, BY_parents, RM_parents, data.
 ```python
 data.kmeans.sum()
 ```
+
+
+
+
+    291
+
+
 
 ### Problem
 
